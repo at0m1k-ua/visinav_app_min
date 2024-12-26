@@ -13,12 +13,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.*
-import okhttp3.*
+import io.socket.client.IO
+import io.socket.client.Manager
+import io.socket.client.Socket
+
 
 class ControlPanelActivity : ComponentActivity() {
-    private lateinit var webSocket: WebSocket
-    private var isWebSocketConnected = false
-    private val client = OkHttpClient()
+    private lateinit var socket: Socket
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,41 +30,34 @@ class ControlPanelActivity : ComponentActivity() {
             return
         }
 
-        val webSocketUrl = "ws://$ipAddress/"
-        initWebSocket(webSocketUrl)
+        val webSocketUrl = "http://$ipAddress/"
+        initSocketIO(webSocketUrl)
 
         setContent {
             ControlPanelScreen(ipAddress)
         }
     }
 
-    private fun initWebSocket(url: String) {
-        val request = Request.Builder().url(url).build()
-
-        webSocket = client.newWebSocket(request, object : WebSocketListener() {
-            override fun onOpen(webSocket: WebSocket, response: Response) {
-                Log.d("WebSocket", "Connected to WebSocket at $url")
-                isWebSocketConnected = true
-                webSocket.send("Hello from client!")
+    private fun initSocketIO(url: String) {
+        try {
+            socket = IO.socket(url)
+            socket.on(Socket.EVENT_CONNECT) {
+                Log.d("Socket.IO", "Connected to Socket.IO server")
+                socket.emit("hello", "Hello from Android client!")
             }
-
-            override fun onMessage(webSocket: WebSocket, text: String) {
-                Log.d("WebSocket", "Message received: $text")
+            socket.on(Socket.EVENT_DISCONNECT) {
+                Log.d("Socket.IO", "Disconnected from Socket.IO server")
             }
-
-            override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-                Log.d("WebSocket", "Closing WebSocket: $code $reason")
-                webSocket.close(1000, null)
-                isWebSocketConnected = false
+            socket.on(Manager.EVENT_ERROR) { args ->
+                // Handle errors
+                Log.e("Socket.IO", "Socket.IO error: " + args[0])
+                navigateToInitialActivity("Socket.IO connection error")
             }
-
-            override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-                val msg = "WebSocket error: ${t.message}"
-                Log.e("WebSocket", msg)
-                isWebSocketConnected = false
-                navigateToInitialActivity(msg)
-            }
-        })
+            socket.connect()
+        } catch (e: Exception) {
+            Log.e("Socket.IO", "Error initializing Socket.IO", e)
+            navigateToInitialActivity("Failed to connect to Socket.IO server")
+        }
     }
 
     private fun navigateToInitialActivity(errorMessage: String) {
@@ -78,8 +72,8 @@ class ControlPanelActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (::webSocket.isInitialized) {
-            webSocket.close(1000, "Activity destroyed")
+        if (::socket.isInitialized) {
+            socket.close()
         }
     }
 
