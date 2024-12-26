@@ -1,8 +1,10 @@
 package com.kpi.visinav_app_min
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
+import android.view.Surface
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -33,6 +35,12 @@ class ControlPanelActivity : ComponentActivity() {
         val webSocketUrl = "http://$ipAddress/"
         initSocketIO(webSocketUrl)
 
+        val display = windowManager.defaultDisplay
+        val rotation = display.rotation
+        if (rotation == Surface.ROTATION_0 || rotation == Surface.ROTATION_180) {
+            requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+        }
+
         setContent {
             ControlPanelScreen(ipAddress)
         }
@@ -60,6 +68,7 @@ class ControlPanelActivity : ComponentActivity() {
         }
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     private fun navigateToInitialActivity(errorMessage: String) {
         GlobalScope.launch(Dispatchers.Main) {
             val intent = Intent(this@ControlPanelActivity, InitialActivity::class.java).apply {
