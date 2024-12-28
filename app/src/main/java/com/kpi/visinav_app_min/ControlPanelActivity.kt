@@ -12,10 +12,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Warning
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -65,7 +61,6 @@ class ControlPanelActivity : ComponentActivity() {
         socket.emit("start_camera", Gson().toJson(mapOf("camera_name" to "front_left")))
 
         setContent {
-            //CameraStream(socket)
             DroneControlScreen()
         }
     }
@@ -144,19 +139,17 @@ fun CameraStream(socket: Socket) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(androidx.compose.ui.graphics.Color.Black) // Optional: Black background for non-image areas
+            .background(Color.Black)
     ) {
-        // Background Image
         if (bitmap != null) {
             Image(
                 bitmap = bitmap.asImageBitmap(),
                 contentDescription = "Camera Stream",
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop // Preserve aspect ratio and crop extra areas
+                contentScale = ContentScale.Crop
             )
         }
 
-        // Foreground Elements
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -186,7 +179,6 @@ fun CameraStream(socket: Socket) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewControlPanelScreen() {
-    // Mock Socket for Preview
     val mockSocket = IO.socket("http://localhost:8080")
     ControlPanelScreen(ipAddress = "192.168.1.1:8080", socket = mockSocket)
 }
@@ -196,9 +188,8 @@ fun DroneControlScreen() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF2E3B2E)) // Dark green background
+            .background(Color(0xFF2E3B2E))
     ) {
-        // Top-Left: Coordinates
         Column(
             modifier = Modifier
                 .padding(16.dp)
@@ -208,7 +199,6 @@ fun DroneControlScreen() {
             Text(text = "Lon: 30.4533602", color = Color.White, fontSize = 14.sp)
         }
 
-        // Top-Right: Sensor info and battery
         Column(
             modifier = Modifier
                 .padding(16.dp)
@@ -229,7 +219,6 @@ fun DroneControlScreen() {
             }
         }
 
-        // Left: Land/Takeoff Button
         Column(
             modifier = Modifier
                 .align(Alignment.CenterStart)
@@ -237,7 +226,7 @@ fun DroneControlScreen() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            IconButton(onClick = { /* Land or Takeoff logic */ }) {
+            IconButton(onClick = {}) {
                 Icon(
                     painter = painterResource(id = R.drawable.land_takeoff),
                     contentDescription = "Land/Takeoff Button",
@@ -247,7 +236,6 @@ fun DroneControlScreen() {
             }
         }
 
-        // Bottom-Left: Actuators (Two Rows of Three Buttons)
         Column(
             modifier = Modifier
                 .align(Alignment.BottomStart)
@@ -277,7 +265,6 @@ fun DroneControlScreen() {
             }
         }
 
-        // Bottom-Center: Camera controls
         Row(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
@@ -300,7 +287,6 @@ fun DroneControlScreen() {
             }
         }
 
-        // Bottom-Right: Map
         Column(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
@@ -310,14 +296,13 @@ fun DroneControlScreen() {
             Box(
                 modifier = Modifier
                     .size(100.dp)
-                    .background(Color(0xFF375D81)), // Placeholder map color
+                    .background(Color(0xFF375D81)),
                 contentAlignment = Alignment.Center
             ) {
                 Text(text = "MAP", color = Color.White, fontSize = 14.sp)
             }
         }
 
-        // Right: Height indicator
         Column(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
