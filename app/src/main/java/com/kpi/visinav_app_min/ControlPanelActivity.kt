@@ -31,6 +31,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.gson.Gson
+import com.kpi.visinav_app_min.ui.components.Actuators
+import com.kpi.visinav_app_min.ui.components.CamerasToggle
+import com.kpi.visinav_app_min.ui.components.Coordinates
+import com.kpi.visinav_app_min.ui.components.HeightControl
+import com.kpi.visinav_app_min.ui.components.LandTakeoffButton
+import com.kpi.visinav_app_min.ui.components.MapWidget
+import com.kpi.visinav_app_min.ui.components.Sensors
 import io.socket.client.IO
 import io.socket.client.Manager
 import io.socket.client.Socket
@@ -190,142 +197,47 @@ fun DroneControlScreen() {
             .fillMaxSize()
             .background(Color(0xFF2E3B2E))
     ) {
-        Column(
+        Coordinates(
             modifier = Modifier
-                .padding(16.dp)
                 .align(Alignment.TopStart)
-        ) {
-            Text(text = "Lat: 50.450079", color = Color.White, fontSize = 14.sp)
-            Text(text = "Lon: 30.4533602", color = Color.White, fontSize = 14.sp)
-        }
+                .padding(16.dp)
+        )
 
-        Column(
+        Sensors(
             modifier = Modifier
                 .padding(16.dp)
                 .align(Alignment.TopEnd),
-            horizontalAlignment = Alignment.End
-        ) {
-            Text(text = "humidity: 70,1", color = Color.White, fontSize = 14.sp)
-            Text(text = "brightness: 59,8", color = Color.White, fontSize = 14.sp)
-            Text(text = "unitsCount: 1", color = Color.White, fontSize = 14.sp)
-            Spacer(modifier = Modifier.height(16.dp))
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .background(Color.Gray, shape = CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "42", color = Color.White, fontSize = 16.sp)
-            }
-        }
+        )
 
-        Column(
+        LandTakeoffButton(
             modifier = Modifier
                 .align(Alignment.CenterStart)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            IconButton(onClick = {}) {
-                Icon(
-                    painter = painterResource(id = R.drawable.land_takeoff),
-                    contentDescription = "Land/Takeoff Button",
-                    tint = Color.White,
-                    modifier = Modifier.size(48.dp)
-                )
-            }
-        }
+        )
 
-        Column(
+        Actuators(
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(text = "Actuators", color = Color.White, fontSize = 14.sp)
-            Spacer(modifier = Modifier.height(8.dp))
-            repeat(2) { row ->
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    repeat(3) { column ->
-                        val index = row * 3 + column + 1
-                        Box(
-                            modifier = Modifier
-                                .size(36.dp)
-                                .background(Color.White, shape = CircleShape),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text(
-                                text = "$index",
-                                color = Color.Black,
-                                fontSize = 14.sp
-                            )
-                        }
-                    }
-                }
-            }
-        }
+        )
 
-        Row(
+        CamerasToggle(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            repeat(4) {
-                Box(
-                    modifier = Modifier
-                        .size(48.dp)
-                        .background(Color.White, shape = CircleShape),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Icon(
-                        painter = painterResource(id = android.R.drawable.ic_menu_camera),
-                        contentDescription = "Camera Control",
-                        tint = Color.Black
-                    )
-                }
-            }
-        }
+                .padding(16.dp)
+        )
 
-        Column(
+        MapWidget(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.End
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(100.dp)
-                    .background(Color(0xFF375D81)),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(text = "MAP", color = Color.White, fontSize = 14.sp)
-            }
-        }
+                .padding(16.dp)
+        )
 
-        Column(
+        HeightControl(
             modifier = Modifier
                 .align(Alignment.CenterEnd)
-                .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Icon(
-                painter = painterResource(id = android.R.drawable.arrow_up_float),
-                contentDescription = "Height Up",
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(text = "3,5m", color = Color.White, fontSize = 16.sp)
-            Spacer(modifier = Modifier.height(8.dp))
-            Icon(
-                painter = painterResource(id = android.R.drawable.arrow_down_float),
-                contentDescription = "Height Down",
-                tint = Color.White,
-                modifier = Modifier.size(24.dp)
-            )
-        }
+                .padding(16.dp)
+        )
     }
 }
 
