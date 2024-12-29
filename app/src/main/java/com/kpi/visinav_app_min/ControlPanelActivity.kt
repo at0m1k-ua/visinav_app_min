@@ -33,7 +33,7 @@ class ControlPanelActivity : ComponentActivity() {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
 
-        socketManager.emit("start_camera", Gson().toJson(mapOf("camera_name" to "front_left")))
+        //socketManager.emit("start_camera", Gson().toJson(mapOf("camera_name" to "front_left")))
 
         setContent {
             DroneControlScreen()

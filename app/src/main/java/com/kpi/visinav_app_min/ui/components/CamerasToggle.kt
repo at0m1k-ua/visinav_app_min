@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
@@ -14,6 +13,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import com.kpi.visinav_app_min.R
+
+@Composable
+fun CameraToggleButton(imageId: Int) {
+    Box(
+        modifier = Modifier
+            .size(48.dp)
+            .background(Color.White, shape = CircleShape),
+        contentAlignment = Alignment.Center
+    ) {
+        Icon(
+            painter = painterResource(id = imageId),
+            contentDescription = "Camera Control",
+            tint = Color.Unspecified
+        )
+    }
+}
 
 @Composable
 fun CamerasToggle(modifier: Modifier) {
@@ -21,19 +37,8 @@ fun CamerasToggle(modifier: Modifier) {
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        repeat(3) {
-            Box(
-                modifier = Modifier
-                    .size(48.dp)
-                    .background(Color.White, shape = CircleShape),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    painter = painterResource(id = android.R.drawable.ic_menu_camera),
-                    contentDescription = "Camera Control",
-                    tint = Color.Black
-                )
-            }
-        }
+        CameraToggleButton(imageId = R.drawable.left_camera)
+        CameraToggleButton(imageId = R.drawable.bottom_camera)
+        CameraToggleButton(imageId = R.drawable.right_camera)
     }
 }

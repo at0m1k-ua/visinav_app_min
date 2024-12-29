@@ -26,7 +26,7 @@ fun LandTakeoffButton(modifier: Modifier) {
                 painter = painterResource(id = R.drawable.land_takeoff),
                 contentDescription = "Land/Takeoff Button",
                 tint = Color.White,
-                modifier = Modifier.size(48.dp)
+                modifier = Modifier.size(72.dp)
             )
         }
     }
