@@ -14,7 +14,7 @@ import androidx.compose.material3.Text
 import com.kpi.visinav_app_min.R
 
 @Composable
-fun BatteryIndicator(modifier: Modifier) {
+fun BatteryIndicator(batteryLevel: Int, modifier: Modifier) {
     Box(
         modifier = modifier.size(48.dp),
         contentAlignment = Alignment.Center
@@ -23,6 +23,6 @@ fun BatteryIndicator(modifier: Modifier) {
             painter = painterResource(id = R.drawable.battery),
             contentDescription = "Battery Icon"
         )
-        Text(text = "42", color = Color.Black, fontSize = 16.sp)
+        Text(text = batteryLevel.toString(), color = Color.Black, fontSize = 16.sp)
     }
 }

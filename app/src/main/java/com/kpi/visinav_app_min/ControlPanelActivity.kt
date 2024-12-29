@@ -7,9 +7,16 @@ import android.util.Log
 import android.view.Surface
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import com.google.gson.Gson
 import com.kpi.visinav_app_min.ui.components.DroneControlScreen
 import kotlinx.coroutines.*
+import org.json.JSONArray
+import org.json.JSONObject
 
 class ControlPanelActivity : ComponentActivity() {
     private lateinit var socketManager: SocketManager
@@ -36,8 +43,31 @@ class ControlPanelActivity : ComponentActivity() {
         //socketManager.emit("start_camera", Gson().toJson(mapOf("camera_name" to "front_left")))
 
         setContent {
-            DroneControlScreen()
+            var telemetryData by remember { mutableStateOf<Map<String, Any>?>(null) }
+
+            DisposableEffect(Unit) {
+                val socket = socketManager.socket
+
+                socket.on("telemetry_data") { args ->
+                    if (args.isNotEmpty()) {
+                        val data = args[0] as JSONObject
+                        Log.d("TelemetryData", "Received: $data")
+                        telemetryData = data.toMap()
+                    } else {
+                        Log.d("TelemetryData", "No data received")
+                    }
+                }
+
+                onDispose {
+                    socket.off("telemetry_data")
+                }
+            }
+
+            DroneControlScreen(
+                telemetryData = telemetryData
+            )
         }
+
     }
 
     private fun initSocketManager() {
@@ -75,3 +105,34 @@ class ControlPanelActivity : ComponentActivity() {
         }
     }
 }
+
+private fun JSONObject.toMap(): Map<String, Any> {
+    val map = mutableMapOf<String, Any>()
+    val keys = keys()
+    while (keys.hasNext()) {
+        val key = keys.next() as String
+        val value = this[key]
+        map[key] = when (value) {
+            is JSONObject -> value.toMap()
+            is JSONArray -> value.toList()
+            else -> value ?: "null"
+        }
+    }
+    return map
+}
+
+private fun JSONArray.toList(): List<Any> {
+    val list = mutableListOf<Any>()
+    for (i in 0 until length()) {
+        val value = get(i)
+        list.add(
+            when (value) {
+                is JSONObject -> value.toMap()
+                is JSONArray -> value.toList()
+                else -> value ?: "null"
+            }
+        )
+    }
+    return list
+}
+

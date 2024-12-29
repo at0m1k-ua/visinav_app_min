@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Sensors(modifier: Modifier) {
+fun Sensors(sensorsData: Map<String, Any>, modifier: Modifier) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.End

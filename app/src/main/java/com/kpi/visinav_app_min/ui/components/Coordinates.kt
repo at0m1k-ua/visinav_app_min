@@ -8,11 +8,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Coordinates(modifier: Modifier) {
+fun Coordinates(coordinatesData: Map<String, Double>, modifier: Modifier) {
     Column(
         modifier = modifier
     ) {
-        Text(text = "Lat: 50.450079", color = Color.White, fontSize = 14.sp)
-        Text(text = "Lon: 30.4533602", color = Color.White, fontSize = 14.sp)
+        Text(text = "Lat: " + coordinatesData["lat"], color = Color.White, fontSize = 14.sp)
+        Text(text = "Lon: " + coordinatesData["lon"], color = Color.White, fontSize = 14.sp)
     }
 }

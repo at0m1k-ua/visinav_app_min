@@ -12,64 +12,69 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DroneControlScreen() {
+fun DroneControlScreen(telemetryData: Map<String, Any>?) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF2E3B2E))
     ) {
-        Coordinates(
-            modifier = Modifier
-                .align(Alignment.TopStart)
-                .padding(16.dp)
-        )
+        telemetryData?.let { data ->
+            val coordinates = data["coordinates"] as? Map<String, Double> ?: emptyMap()
+            val sensors = data["sensorsState"] as? Map<String, Any> ?: emptyMap()
+            val battery = data["battery"] as? Int ?: 0
+            val height = data["height"] as? Double ?: 0.0
 
-        Sensors(
-            modifier = Modifier
-                .align(Alignment.TopCenter)
-                .padding(16.dp)
-        )
+            Coordinates(
+                coordinatesData = coordinates,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(16.dp)
+            )
 
-        BatteryIndicator(
-            modifier = Modifier
-                .align(Alignment.TopEnd)
-                .padding(16.dp)
-        )
+            Sensors(
+                sensorsData = sensors,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(16.dp)
+            )
 
-        LandTakeoffButton(
-            modifier = Modifier
-                .align(Alignment.CenterStart)
-                .padding(16.dp),
-        )
+            BatteryIndicator(
+                batteryLevel = battery,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(16.dp)
+            )
 
-        Actuators(
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(16.dp),
-        )
+            LandTakeoffButton(
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .padding(16.dp),
+            )
 
-        CamerasToggle(
-            modifier = Modifier
-                .align(Alignment.BottomCenter)
-                .padding(16.dp)
-        )
+            Actuators(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(16.dp),
+            )
 
-        MapWidget(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(16.dp)
-        )
+            CamerasToggle(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(16.dp)
+            )
 
-        HeightControl(
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .padding(16.dp)
-        )
+            MapWidget(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(16.dp)
+            )
+
+            HeightControl(
+                height = height,
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(16.dp)
+            )
+        }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewDroneControlScreen() {
-    DroneControlScreen()
 }

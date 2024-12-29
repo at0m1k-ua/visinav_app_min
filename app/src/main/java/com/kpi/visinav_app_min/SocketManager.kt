@@ -6,7 +6,7 @@ import io.socket.client.Manager
 import io.socket.client.Socket
 
 class SocketManager(private val url: String) {
-    private lateinit var socket: Socket
+    lateinit var socket: Socket
 
     fun initializeSocket(
         onConnect: () -> Unit = {},
