@@ -1,5 +1,6 @@
 package com.kpi.visinav_app_min.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,20 +24,27 @@ fun HeightControl(height: Double, modifier: Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Icon(
-            painter = painterResource(id = android.R.drawable.arrow_up_float),
-            contentDescription = "Height Up",
-            tint = Color.White,
-            modifier = Modifier.size(24.dp)
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "3,5m", color = Color.White, fontSize = 16.sp)
-        Spacer(modifier = Modifier.height(8.dp))
-        Icon(
-            painter = painterResource(id = android.R.drawable.arrow_down_float),
-            contentDescription = "Height Down",
-            tint = Color.White,
-            modifier = Modifier.size(24.dp)
-        )
+        Column(
+            modifier = modifier
+                .background(color = Color.Black.copy(alpha = 0.5f))
+                .padding(8.dp),
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                painter = painterResource(id = android.R.drawable.arrow_up_float),
+                contentDescription = "Height Up",
+                tint = Color.White,
+                modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(text = height.toString() + "m", color = Color.White, fontSize = 16.sp)
+            Spacer(modifier = Modifier.height(8.dp))
+            Icon(
+                painter = painterResource(id = android.R.drawable.arrow_down_float),
+                contentDescription = "Height Down",
+                tint = Color.White,
+                modifier = Modifier.size(24.dp)
+            )
+        }
     }
 }

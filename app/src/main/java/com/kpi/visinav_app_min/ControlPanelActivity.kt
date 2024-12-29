@@ -12,7 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.google.gson.Gson
+import com.kpi.visinav_app_min.ui.components.CameraStream
 import com.kpi.visinav_app_min.ui.components.DroneControlScreen
 import kotlinx.coroutines.*
 import org.json.JSONArray
@@ -40,8 +40,6 @@ class ControlPanelActivity : ComponentActivity() {
             requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }
 
-        //socketManager.emit("start_camera", Gson().toJson(mapOf("camera_name" to "front_left")))
-
         setContent {
             var telemetryData by remember { mutableStateOf<Map<String, Any>?>(null) }
 
@@ -64,7 +62,10 @@ class ControlPanelActivity : ComponentActivity() {
             }
 
             DroneControlScreen(
-                telemetryData = telemetryData
+                telemetryData = telemetryData,
+                background = {
+                    CameraStream(socketManager.socket)
+                }
             )
         }
 

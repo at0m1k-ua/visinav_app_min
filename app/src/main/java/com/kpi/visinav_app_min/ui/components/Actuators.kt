@@ -21,7 +21,6 @@ fun Actuators(modifier: Modifier) {
         modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Actuators", color = Color.White, fontSize = 14.sp)
         repeat(2) { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 repeat(3) { column ->

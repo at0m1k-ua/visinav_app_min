@@ -46,16 +46,6 @@ fun CameraStream(socket: Socket) {
                 contentScale = ContentScale.Crop
             )
         }
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = "Control Panel", style = androidx.compose.material3.MaterialTheme.typography.headlineMedium)
-        }
     }
 
     DisposableEffect(Unit) {

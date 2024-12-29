@@ -12,12 +12,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DroneControlScreen(telemetryData: Map<String, Any>?) {
+fun DroneControlScreen(telemetryData: Map<String, Any>?,
+                       background: @Composable () -> Unit = {}) {
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF2E3B2E))
     ) {
+        background()
+
         telemetryData?.let { data ->
             val coordinates = data["coordinates"] as? Map<String, Double> ?: emptyMap()
             val sensors = data["sensorsState"] as? Map<String, Any> ?: emptyMap()
