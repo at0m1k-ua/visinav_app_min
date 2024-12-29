@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
@@ -21,10 +18,10 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun Actuators(modifier: Modifier) {
     Column(
-        modifier = modifier
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = "Actuators", color = Color.White, fontSize = 14.sp)
-        Spacer(modifier = Modifier.height(8.dp))
         repeat(2) { row ->
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 repeat(3) { column ->
@@ -33,7 +30,7 @@ fun Actuators(modifier: Modifier) {
                         modifier = Modifier
                             .size(36.dp)
                             .background(Color.White, shape = CircleShape),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = "$index",
