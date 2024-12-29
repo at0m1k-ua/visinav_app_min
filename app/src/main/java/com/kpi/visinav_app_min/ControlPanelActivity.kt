@@ -65,7 +65,8 @@ class ControlPanelActivity : ComponentActivity() {
                 telemetryData = telemetryData,
                 background = {
                     CameraStream(socketManager.socket)
-                }
+                },
+                socket = socketManager.socket
             )
         }
 

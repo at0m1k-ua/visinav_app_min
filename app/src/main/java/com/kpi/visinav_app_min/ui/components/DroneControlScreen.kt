@@ -8,12 +8,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.socket.client.Socket
 
 @Composable
 fun DroneControlScreen(telemetryData: Map<String, Any>?,
-                       background: @Composable () -> Unit = {}) {
+                       background: @Composable () -> Unit = {},
+                       socket: Socket
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -58,6 +60,7 @@ fun DroneControlScreen(telemetryData: Map<String, Any>?,
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .padding(16.dp),
+                socket
             )
 
             CamerasToggle(
