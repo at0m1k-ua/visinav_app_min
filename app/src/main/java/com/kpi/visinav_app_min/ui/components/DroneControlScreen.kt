@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.google.gson.Gson
 import io.socket.client.Socket
 
 @Composable
@@ -66,7 +67,12 @@ fun DroneControlScreen(telemetryData: Map<String, Any>?,
             CamerasToggle(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(16.dp)
+                    .padding(16.dp),
+                onCameraSelected = { camera ->
+                    socket.emit("start_camera", Gson().toJson(
+                        mapOf("camera_name" to camera)
+                    ))
+                }
             )
 
             MapWidget(
