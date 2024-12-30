@@ -51,12 +51,6 @@ fun DroneControlScreen(telemetryData: Map<String, Any>?,
                     .padding(16.dp)
             )
 
-            LandTakeoffButton(
-                modifier = Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(16.dp),
-            )
-
             Actuators(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
@@ -82,6 +76,7 @@ fun DroneControlScreen(telemetryData: Map<String, Any>?,
             )
 
             HeightControl(
+                socket = socket,
                 height = height,
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
