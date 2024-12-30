@@ -17,7 +17,6 @@ import androidx.compose.runtime.setValue
 import com.kpi.visinav_app_min.ui.components.CameraStream
 import com.kpi.visinav_app_min.ui.components.DroneControlScreen
 import kotlinx.coroutines.*
-import org.json.JSONArray
 import org.json.JSONObject
 
 class ControlPanelActivity : ComponentActivity() {
@@ -44,13 +43,11 @@ class ControlPanelActivity : ComponentActivity() {
 
         setContent {
             var telemetryData by remember { mutableStateOf<Map<String, Any>?>(null) }
-
-            var selectedCoordinates by remember { mutableStateOf<Pair<Double, Double>?>(null) }
             val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == RESULT_OK) {
                     val latitude = result.data?.getDoubleExtra("lat", 0.0) ?: 0.0
                     val longitude = result.data?.getDoubleExtra("lon", 0.0) ?: 0.0
-                    selectedCoordinates = latitude to longitude
+                    emitCoordinatesToBackend(latitude, longitude)
                 }
             }
 
@@ -80,7 +77,7 @@ class ControlPanelActivity : ComponentActivity() {
                 socket = socketManager.socket,
                 onMapClick = {
                     launcher.launch(Intent(this, MapSelectionActivity::class.java))
-                },
+                }
             )
         }
 
@@ -98,6 +95,14 @@ class ControlPanelActivity : ComponentActivity() {
                 navigateToInitialActivity(error)
             }
         )
+    }
+
+    private fun emitCoordinatesToBackend(lat: Double, lon: Double) {
+        val data = JSONObject().apply {
+            put("lat", lat)
+            put("lon", lon)
+        }
+        socketManager.emit("set_drone_destination", data.toString())
     }
 
     override fun onDestroy() {
@@ -130,25 +135,8 @@ private fun JSONObject.toMap(): Map<String, Any> {
         val value = this[key]
         map[key] = when (value) {
             is JSONObject -> value.toMap()
-            is JSONArray -> value.toList()
             else -> value ?: "null"
         }
     }
     return map
 }
-
-private fun JSONArray.toList(): List<Any> {
-    val list = mutableListOf<Any>()
-    for (i in 0 until length()) {
-        val value = get(i)
-        list.add(
-            when (value) {
-                is JSONObject -> value.toMap()
-                is JSONArray -> value.toList()
-                else -> value ?: "null"
-            }
-        )
-    }
-    return list
-}
-

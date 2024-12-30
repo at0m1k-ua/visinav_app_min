@@ -84,7 +84,7 @@ fun MapSelectionScreen(onPointSelected: (Double, Double) -> Unit) {
                 if (point != null) {
                     onPointSelected(point.latitude, point.longitude)
                 } else {
-                    println("Точка не выбрана!")
+                    println("Точку не обрано!")
                 }
             },
             modifier = Modifier
