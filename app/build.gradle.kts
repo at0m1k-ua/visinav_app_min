@@ -81,4 +81,5 @@ dependencies {
     kapt("com.github.bumptech.glide:compiler:4.15.1")
     implementation("com.github.bumptech.glide:compose:1.0.0-alpha.1")
     implementation("com.google.code.gson:gson:2.10.1")
+    implementation("org.osmdroid:osmdroid-android:6.1.15")
 }

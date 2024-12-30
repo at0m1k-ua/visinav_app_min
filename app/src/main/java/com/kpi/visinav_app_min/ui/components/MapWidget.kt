@@ -1,6 +1,7 @@
 package com.kpi.visinav_app_min.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
@@ -13,15 +14,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun MapWidget(modifier: Modifier) {
+fun MapWidget(modifier: Modifier, onClick: () -> Unit = {}) {
     Column(
         modifier = modifier
     ) {
         Box(
             modifier = Modifier
                 .size(100.dp)
-                .background(Color(0xFF375D81)),
-            contentAlignment = Alignment.Center
+                .background(Color(0xFF375D81))
+                .clickable(onClick = onClick),
+            contentAlignment = Alignment.Center,
         ) {
             Text(text = "MAP", color = Color.White, fontSize = 14.sp)
         }

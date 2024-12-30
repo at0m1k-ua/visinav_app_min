@@ -6,7 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Surface
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +45,15 @@ class ControlPanelActivity : ComponentActivity() {
         setContent {
             var telemetryData by remember { mutableStateOf<Map<String, Any>?>(null) }
 
+            var selectedCoordinates by remember { mutableStateOf<Pair<Double, Double>?>(null) }
+            val launcher = rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == RESULT_OK) {
+                    val latitude = result.data?.getDoubleExtra("lat", 0.0) ?: 0.0
+                    val longitude = result.data?.getDoubleExtra("lon", 0.0) ?: 0.0
+                    selectedCoordinates = latitude to longitude
+                }
+            }
+
             DisposableEffect(Unit) {
                 val socket = socketManager.socket
 
@@ -66,7 +77,10 @@ class ControlPanelActivity : ComponentActivity() {
                 background = {
                     CameraStream(socketManager.socket)
                 },
-                socket = socketManager.socket
+                socket = socketManager.socket,
+                onMapClick = {
+                    launcher.launch(Intent(this, MapSelectionActivity::class.java))
+                },
             )
         }
 

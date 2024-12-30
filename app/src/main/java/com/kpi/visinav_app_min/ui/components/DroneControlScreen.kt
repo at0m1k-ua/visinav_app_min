@@ -15,7 +15,8 @@ import io.socket.client.Socket
 @Composable
 fun DroneControlScreen(telemetryData: Map<String, Any>?,
                        background: @Composable () -> Unit = {},
-                       socket: Socket
+                       socket: Socket,
+                       onMapClick: () -> Unit = {}
 ) {
     Box(
         modifier = Modifier
@@ -72,7 +73,8 @@ fun DroneControlScreen(telemetryData: Map<String, Any>?,
             MapWidget(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .padding(16.dp)
+                    .padding(16.dp),
+                onClick = onMapClick
             )
 
             HeightControl(
