@@ -102,7 +102,7 @@ fun createMapView(context: Context, selectedPoint: MutableState<GeoPoint?>): Map
     mapView.setTileSource(org.osmdroid.tileprovider.tilesource.TileSourceFactory.MAPNIK)
     mapView.controller.setZoom(15.0)
     mapView.controller.setCenter(GeoPoint(50.440496, 30.549744))
-    mapView.setBuiltInZoomControls(false) // Отключаем встроенные кнопки масштаба
+    mapView.setBuiltInZoomControls(false)
     mapView.setMultiTouchControls(true)
 
     val mapEventsOverlay = MapEventsOverlay(object : MapEventsReceiver {

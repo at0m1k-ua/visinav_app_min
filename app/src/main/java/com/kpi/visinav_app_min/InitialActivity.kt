@@ -22,10 +22,8 @@ class InitialActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         requestedOrientation = android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 
-        // Получение сообщения об ошибке из Intent
         val errorMessage = intent.getStringExtra("ERROR_MESSAGE")
         if (!errorMessage.isNullOrEmpty()) {
-            // Отображение тоста с сообщением
             Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
         }
 
